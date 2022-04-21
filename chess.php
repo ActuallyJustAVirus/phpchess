@@ -133,15 +133,20 @@ function allowmove($board,$selpiece,$moveto){
                 } else {
                     $dirc = "+";
                 }
-                echo $dirc."\n";
                 if ($pieceatend!="em") {
                     if ($moveto[0]-$selpiece[0] == $dirc."1" && abs($moveto[1]-$selpiece[1]) == 1) {
                         return TRUE;
                     }
                     return FALSE;
                 }
-                if ($moveto[0]-$selpiece[0] == $dirc."1" && abs($moveto[1]-$selpiece[1]) == 0) {
-                    return TRUE;
+                if (abs($moveto[1]-$selpiece[1]) == 0) {
+                    if ($moveto[0]-$selpiece[0] == $dirc."1") {
+                        return TRUE;
+                    } elseif ($moveto[0]-$selpiece[0] == $dirc."2" && ($selpiece[0] == 1 || $selpiece[0] == 6)) {
+                        
+                        return TRUE;
+                    }
+                    return FALSE;
                 }
                 return FALSE;
                 break;
