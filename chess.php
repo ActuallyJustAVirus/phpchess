@@ -128,13 +128,19 @@ function allowmove($board,$selpiece,$moveto){
                 break;
             
             case 'p'://pawn
+                if (substr($piecetomove,0,1)=="w") {
+                    $dirc = "-";
+                } else {
+                    $dirc = "+";
+                }
+                echo $dirc."\n";
                 if ($pieceatend!="em") {
-                    if (abs($moveto[0]-$selpiece[0]) == 1 && abs($moveto[1]-$selpiece[1]) == 1) {
+                    if ($moveto[0]-$selpiece[0] == $dirc."1" && abs($moveto[1]-$selpiece[1]) == 1) {
                         return TRUE;
                     }
                     return FALSE;
                 }
-                if (abs($moveto[0]-$selpiece[0]) == 1 && abs($moveto[1]-$selpiece[1]) == 0) {
+                if ($moveto[0]-$selpiece[0] == $dirc."1" && abs($moveto[1]-$selpiece[1]) == 0) {
                     return TRUE;
                 }
                 return FALSE;
