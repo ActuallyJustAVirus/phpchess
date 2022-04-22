@@ -1,10 +1,16 @@
 # phpchess
-v0.0.1
-a chess game that runs php
-Things missing:
-en passant
-castling
-avoid check
-checkmate
-turns
-better input (4g && g4f4)
+v0.0.3 <br>
+a chess game that runs php <br>
+<br>
+Things missing:<br>
+en passant<br>
+castling<br>
+avoid check<br>
+checkmate<br>
+turns<br>
+<br>
+Good to have:<br>
+move history<br>
+better input (4g && g4f4)<br>
+better gui<br>
+<br>

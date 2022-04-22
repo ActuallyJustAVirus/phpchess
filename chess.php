@@ -15,19 +15,9 @@ function printboard($board){
         "wh"=>"♞ ",
         "wp"=>"♟ "
     ];
-    $num = [
-        "0"=>"8",
-        "1"=>"7",
-        "2"=>"6",
-        "3"=>"5",
-        "4"=>"4",
-        "5"=>"3",
-        "6"=>"2",
-        "7"=>"1"
-    ];
     echo "  ▄▄▄▄    ▄▄▄▄    ▄▄▄▄    ▄▄▄▄    \n";
     for ($i=0; $i < 8; $i++) {
-        $line = $num[$i]." ";
+        $line = abs($i-8)." ";
         for ($j=0; $j < 8; $j++) {
             if (($i+$j)%2==0) {
                 if ($board[$i][$j]=="em") {
@@ -89,20 +79,10 @@ function readin($in){
         "g"=>"6",
         "h"=>"7"
     ];
-    $num = [
-        "8"=>"0",
-        "7"=>"1",
-        "6"=>"2",
-        "5"=>"3",
-        "4"=>"4",
-        "3"=>"5",
-        "2"=>"6",
-        "1"=>"7"
-    ];
     if (strlen($in)!=2) { return FALSE; }
     $string = str_split($in,1);
-    if (array_key_exists($string[0],$letters) && array_key_exists($string[1],$num)) {
-        $out[0] = $num[$string[1]];
+    if (array_key_exists($string[0],$letters) && $string[1] >= 1 && $string[1] <= 8) {
+        $out[0] = abs($string[1]-8); 
         $out[1] = $letters[$string[0]];
         return $out;
     } else { return FALSE; }
