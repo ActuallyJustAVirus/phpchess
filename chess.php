@@ -243,16 +243,23 @@ $pieces = [
 ];
 $board = makeboard();
 printboard($board);
+echo "\n";
 while (1) {
     echo "Select piece to move!\n>";
     $selpiece = readin(readline(""));
     if ($selpiece==FALSE) {
+        printboard($board);
+        echo "Make a valid input!\n";
         continue;
     }
     $piece = $board[$selpiece[0]][$selpiece[1]];
-    echo "Select where to move your ".$pieces[$piece]." is going to move!\n>";
+    printboard($board);
+    echo "You selected ".$pieces[$piece]."!\n";
+    echo "Choose where it is going to move!\n>";
     $moveto = readin(readline(""));
     if ($moveto==FALSE) {
+        printboard($board);
+        echo "Make a valid input!\n";
         continue;
     }
     if (allowmove($board,$selpiece,$moveto)) {//if allowed
@@ -260,7 +267,9 @@ while (1) {
         $board[$moveto[0]][$moveto[1]] = $piece;
         $board[$selpiece[0]][$selpiece[1]] = "em";
         printboard($board);
+        echo "You made a move!\n";
     } else {
+        printboard($board);
         echo "You can't make that move!\n";
     }
     

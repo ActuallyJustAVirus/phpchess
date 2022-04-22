@@ -1,5 +1,5 @@
 # phpchess
-v0.0.3 <br>
+v0.0.4 <br>
 a chess game that runs php <br>
 <br>
 Things missing:<br>
@@ -8,6 +8,7 @@ castling<br>
 avoid check<br>
 checkmate<br>
 turns<br>
+promotion<br>
 <br>
 Good to have:<br>
 move history<br>
