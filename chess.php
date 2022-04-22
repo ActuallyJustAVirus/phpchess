@@ -124,7 +124,12 @@ function allowmove($board,$selpiece,$moveto){
                 break;
             
             case 'k'://king
-                # code...
+                if (abs($moveto[0]-$selpiece[0]) == 1 || abs($moveto[0]-$selpiece[0]) == 0) {
+                    if (abs($moveto[1]-$selpiece[1]) == 1 || abs($moveto[1]-$selpiece[1]) == 0) {
+                        return TRUE;
+                    }
+                }
+                return FALSE;
                 break;
             
             case 'p'://pawn
@@ -143,8 +148,8 @@ function allowmove($board,$selpiece,$moveto){
                     if ($moveto[0]-$selpiece[0] == $dirc."1") {
                         return TRUE;
                     } elseif ($moveto[0]-$selpiece[0] == $dirc."2" && ($selpiece[0] == 1 || $selpiece[0] == 6)) {
-                        
-                        return TRUE;
+                        //pawn can jump over piece if it is in front of it at the start
+                        return TRUE;                        
                     }
                     return FALSE;
                 }
@@ -152,7 +157,40 @@ function allowmove($board,$selpiece,$moveto){
                 break;
 
             case 'q'://queen
-                # code...
+                if (($moveto[0]-$selpiece[0]) == 0 || ($moveto[1]-$selpiece[1]) == 0) {
+                    if (($moveto[0]-$selpiece[0]) == 0) {
+                        for ($i=min($moveto[1],$selpiece[1])+1; $i < max($moveto[1],$selpiece[1]); $i++) { 
+                            if ($board[$moveto[0]][$i]!="em") {
+                                return FALSE;
+                            }
+                        }
+                        return TRUE;
+                    } else {
+                        for ($i=min($moveto[0],$selpiece[0])+1; $i < max($moveto[0],$selpiece[0]); $i++) { 
+                            if ($board[$i][$moveto[1]]!="em") {
+                                return FALSE;
+                            }
+                        }
+                        return TRUE;
+                    }
+                }
+                if (($moveto[0] + $moveto[1]) == ($selpiece[0] + $selpiece[1])) {
+                    for ($i=min($moveto[0],$selpiece[0])+1,$j=max($moveto[1],$selpiece[1])-1; $i < max($moveto[0],$selpiece[0]); $i++, $j--) { 
+                        if ($board[$i][$j]!="em") {
+                            return FALSE;
+                        }
+                    }
+                    return TRUE;
+                } elseif (($moveto[0] + abs($moveto[1]-7)) == ($selpiece[0] + abs($selpiece[1]-7))) {
+                    for ($i=min($moveto[0],$selpiece[0])+1,$j=max($moveto[1],$selpiece[1])+1; $i < max($moveto[0],$selpiece[0]); $i++, $j++) { 
+                        if ($board[$i][$j]!="em") {
+                            return FALSE;
+                        }
+                    }
+                    return TRUE;
+                }
+                
+                return FALSE;
                 break;
 
             case 'r'://rook
