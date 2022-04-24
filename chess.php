@@ -1,19 +1,19 @@
 <?php
-function printboard($board){
+function printboard($board,$boardmark){
     $piece = [
         "em"=>"▄▀",//██
-        "bk"=>"♔ ",
-        "bq"=>"♕ ",
-        "br"=>"♖ ",
-        "bb"=>"♗ ",
-        "bh"=>"♘ ",
-        "bp"=>"♙ ",
-        "wk"=>"♚ ",
-        "wq"=>"♛ ",
-        "wr"=>"♜ ",
-        "wb"=>"♝ ",
-        "wh"=>"♞ ",
-        "wp"=>"♟ "
+        "bk"=>"♔",
+        "bq"=>"♕",
+        "br"=>"♖",
+        "bb"=>"♗",
+        "bh"=>"♘",
+        "bp"=>"♙",
+        "wk"=>"♚",
+        "wq"=>"♛",
+        "wr"=>"♜",
+        "wb"=>"♝",
+        "wh"=>"♞",
+        "wp"=>"♟"
     ];
     echo "  ▄▄▄▄    ▄▄▄▄    ▄▄▄▄    ▄▄▄▄    \n";
     for ($i=0; $i < 8; $i++) {
@@ -21,18 +21,66 @@ function printboard($board){
         for ($j=0; $j < 8; $j++) {
             if (($i+$j)%2==0) {
                 if ($board[$i][$j]=="em") {
-                    $line.="████";
+                    switch ($boardmark[$i][$j]) {
+                        case '0':
+                            $line.="████";
+                            break;
+                        case '1':
+                            $line.="█▓▓█";
+                            break;
+                        default:
+                            $line.="erro";
+                            break;
+                    }
                 } else {
                     $line.= "█";
                     $line.= $piece[$board[$i][$j]];
+                    switch ($boardmark[$i][$j]) {
+                        case '0':
+                            $line.=" ";
+                            break;
+                        case '1':
+                            $line.="×";//⌖
+                            break;
+                        case '2':
+                            $line.="*";//✶
+                            break;
+                        default:
+                            $line.="E";
+                            break;
+                    }
                     $line.= "█";
                 }
             } else {
                 if ($board[$i][$j]=="em") {
-                    $line.="    ";
+                    switch ($boardmark[$i][$j]) {
+                        case '0':
+                            $line.="    ";
+                            break;
+                        case '1':
+                            $line.=" ░░ ";
+                            break;
+                        default:
+                            $line.="erro";
+                            break;
+                    }
                 } else {
                     $line.= " ";
                     $line.= $piece[$board[$i][$j]];
+                    switch ($boardmark[$i][$j]) {
+                        case '0':
+                            $line.=" ";
+                            break;
+                        case '1':
+                            $line.="×";//⌖
+                            break;
+                        case '2':
+                            $line.="*";//✶
+                            break;
+                        default:
+                            $line.="E";
+                            break;
+                    }
                     $line.= " ";
                 }
             }
@@ -49,20 +97,6 @@ function printboard($board){
         }
     }
     echo "   a   b   c   d   e   f   g   h  \n";
-}
-
-function makeboard(){
-    $board = [
-        ["br","bh","bb","bq","bk","bb","bh","br"],
-        ["bp","bp","bp","bp","bp","bp","bp","bp"],
-        ["em","em","em","em","em","em","em","em"],
-        ["em","em","em","em","em","em","wp","em"],
-        ["em","em","em","em","em","em","em","em"],
-        ["em","em","em","em","em","em","em","em"],
-        ["wp","wp","wp","em","wp","wp","wp","em"],
-        ["wr","wh","wb","wq","wk","wb","wh","wr"]
-    ];
-    return $board;
 }
 
 function readin($in){
@@ -162,7 +196,7 @@ function allowmove($board,$selpiece,$moveto){
                     }
                     return TRUE;
                 } elseif (($moveto[0] + abs($moveto[1]-7)) == ($selpiece[0] + abs($selpiece[1]-7))) {
-                    for ($i=min($moveto[0],$selpiece[0])+1,$j=max($moveto[1],$selpiece[1])+1; $i < max($moveto[0],$selpiece[0]); $i++, $j++) { 
+                    for ($i=min($moveto[0],$selpiece[0])+1,$j=min($moveto[1],$selpiece[1])+1; $i < max($moveto[0],$selpiece[0]); $i++, $j++) { 
                         if ($board[$i][$j]!="em") {
                             return FALSE;
                         }
@@ -203,7 +237,7 @@ function allowmove($board,$selpiece,$moveto){
                     }
                     return TRUE;
                 } elseif (($moveto[0] + abs($moveto[1]-7)) == ($selpiece[0] + abs($selpiece[1]-7))) {
-                    for ($i=min($moveto[0],$selpiece[0])+1,$j=max($moveto[1],$selpiece[1])+1; $i < max($moveto[0],$selpiece[0]); $i++, $j++) { 
+                    for ($i=min($moveto[0],$selpiece[0])+1,$j=min($moveto[1],$selpiece[1])+1; $i < max($moveto[0],$selpiece[0]); $i++, $j++) { 
                         if ($board[$i][$j]!="em") {
                             return FALSE;
                         }
@@ -226,6 +260,23 @@ function allowmove($board,$selpiece,$moveto){
     
 }
 
+function makemarks($board,$selpiece){
+    $boardmark = [];
+    for ($i=0; $i < 8; $i++) { 
+        for ($j=0; $j < 8; $j++) { 
+            if ($selpiece == [$i,$j]) {
+                $boardmark[$i][$j] = 2;
+                continue;
+            } else {
+                $boardmark[$i][$j] = allowmove($board,$selpiece,[$i,$j]);
+                continue;
+            }
+        }
+    }
+    var_dump($boardmark);
+    return $boardmark;
+}
+
 $pieces = [
     "em"=>"▄▀",//██
     "bk"=>"♔ ",
@@ -241,24 +292,45 @@ $pieces = [
     "wh"=>"♞ ",
     "wp"=>"♟ "
 ];
-$board = makeboard();
-printboard($board);
-echo "\n";
+$board = [
+    ["br","bh","bb","bq","bk","bb","bh","br"],
+    ["bp","bp","bp","bp","bp","bp","bp","bp"],
+    ["em","em","em","em","em","em","em","em"],
+    ["em","em","em","em","em","em","em","em"],
+    ["em","em","em","em","em","em","em","em"],
+    ["em","em","em","em","em","em","em","em"],
+    ["wp","wp","wp","wp","wp","wp","wp","wp"],
+    ["wr","wh","wb","wq","wk","wb","wh","wr"]
+];
+$noboardmark = [
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0]
+];
+
+printboard($board,$noboardmark);
+echo "Welcome to php chess!\n";
 while (1) {
     echo "Select piece to move!\n>";
     $selpiece = readin(readline(""));
     if ($selpiece==FALSE) {
-        printboard($board);
+        printboard($board,$noboardmark);
         echo "Make a valid input!\n";
         continue;
     }
     $piece = $board[$selpiece[0]][$selpiece[1]];
-    printboard($board);
+    $boardmark = makemarks($board,$selpiece);
+    printboard($board,$boardmark);
     echo "You selected ".$pieces[$piece]."!\n";
     echo "Choose where it is going to move!\n>";
     $moveto = readin(readline(""));
     if ($moveto==FALSE) {
-        printboard($board);
+        printboard($board,$noboardmark);
         echo "Make a valid input!\n";
         continue;
     }
@@ -266,10 +338,10 @@ while (1) {
         //make move
         $board[$moveto[0]][$moveto[1]] = $piece;
         $board[$selpiece[0]][$selpiece[1]] = "em";
-        printboard($board);
+        printboard($board,$noboardmark);
         echo "You made a move!\n";
     } else {
-        printboard($board);
+        printboard($board,$noboardmark);
         echo "You can't make that move!\n";
     }
     
