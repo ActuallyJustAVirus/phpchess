@@ -273,7 +273,6 @@ function makemarks($board,$selpiece){
             }
         }
     }
-    var_dump($boardmark);
     return $boardmark;
 }
 

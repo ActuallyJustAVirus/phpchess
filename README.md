@@ -1,5 +1,5 @@
 # phpchess
-v0.1 <br>
+v0.1.1 <br>
 a chess game that runs php<br>
 playable in visual studio code or similar<br>
 <br>
